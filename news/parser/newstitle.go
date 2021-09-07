@@ -5,11 +5,10 @@ import (
 	"regexp"
 )
 
-const newsTitleRe = `<a href="//(www.chinanews.com/.+.shtml)">([^<]+)</a></div>`
+var newsTitleRe = regexp.MustCompile(`<a href="//(www.chinanews.com/.+.shtml)">([^<]+)</a></div>`)
 
 func ParseNewsTitle(contents []byte) engine.ParseResult {
-	reg := regexp.MustCompile(newsTitleRe)
-	matches := reg.FindAllSubmatch(contents, -1)
+	matches := newsTitleRe.FindAllSubmatch(contents, -1)
 
 	result := engine.ParseResult{}
 	for _, m := range matches {

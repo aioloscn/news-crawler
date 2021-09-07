@@ -24,7 +24,7 @@ func ParseProfile(contents []byte) engine.ParseResult {
 		log.Fatalln(err)
 	}
 	dom.Find(".left_zw").Each(func(i int, selection *goquery.Selection) {
-		profile.Content = selection.Text()
+		profile.Content, _ = selection.Html()
 	})
 
 	result := engine.ParseResult{
