@@ -14,7 +14,9 @@ func ParseCategory(contents []byte) engine.ParseResult {
 
 	result := engine.ParseResult{}
 	for _, m := range matches {
-		result.Items = append(result.Items, string(m[2]))
+		result.Items = append(result.Items, engine.Item{
+			Payload: string(m[2]),
+		})
 		result.Requests = append(result.Requests, engine.Request{
 			Url:        "https://" + string(m[1]),
 			ParserFunc: engine.NilParser,

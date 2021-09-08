@@ -7,7 +7,7 @@ import (
 type ConcurrentEngine struct {
 	Scheduler   Scheduler
 	WorkerCount int
-	ItemChan    chan interface{}
+	ItemChan    chan Item
 }
 
 type Scheduler interface {
@@ -36,7 +36,7 @@ func (e *ConcurrentEngine) Run(seeds ...Request) {
 	for {
 		result := <-out
 		for _, item := range result.Items {
-			if _, ok := item.(model.Profile); ok {
+			if _, ok := item.Payload.(model.Profile); ok && item.Payload.(model.Profile).Title != "" {
 				go func() {
 					e.ItemChan <- item
 				}()

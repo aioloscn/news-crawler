@@ -9,6 +9,7 @@ import (
 	"strings"
 )
 
+var idRe = regexp.MustCompile(`<div id="SOHUCS" sid="([0-9]+)"></div>`)
 var categoryRe = regexp.MustCompile(`<h4 class='newsRecommendTitle'>(.+)精选：</h4>`)
 var pubtimeRe = regexp.MustCompile(`<span id="pubtime_baidu">([^<]+)</span>`)
 var titleRe = regexp.MustCompile(`<h1 style="display:block; position:relative; clear:both">([^<]+)</h1>`)
@@ -28,7 +29,12 @@ func ParseProfile(contents []byte) engine.ParseResult {
 	})
 
 	result := engine.ParseResult{
-		Items: []interface{}{profile},
+		Items: []engine.Item{
+			{
+				Id:      extractString(contents, idRe),
+				Payload: profile,
+			},
+		},
 	}
 	return result
 }
